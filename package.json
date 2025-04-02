@@ -1,0 +1,21 @@
+{
+  "name": "repo-vulgarity-analysis",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "bun run src/index.ts",
+    "docker:run": "docker compose run --rm analyzer bun run src/index.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.10.0",
+    "@types/bad-words": "^3.0.3",
+    "bad-words": "^3.0.4",
+    "ioredis": "^5.3.2",
+    "simple-git": "^3.22.0"
+  },
+  "devDependencies": {
+    "bun-types": "latest",
+    "prisma": "^5.10.0",
+    "typescript": "^5.3.3"
+  }
+}
