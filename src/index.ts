@@ -1,11 +1,9 @@
 import { PrismaClient } from "@prisma/client";
-import Redis from "ioredis";
 import simpleGit from "simple-git";
 import Filter from "bad-words";
 import fs from "fs";
 
 const prisma = new PrismaClient();
-const redis = new Redis(process.env.REDIS_URL!);
 const filter = new Filter();
 
 async function analyzeRepository(repoUrl: string) {
@@ -28,14 +26,6 @@ async function analyzeRepository(repoUrl: string) {
       const commits = await git.cwd(repoPath).log([branch]);
 
       for (const commit of commits.all) {
-        const cacheKey = `${repoName}:${branch}:${commit.hash}`;
-        const cached = await redis.get(cacheKey);
-
-        if (cached) {
-          console.log(`Skipping cached commit ${commit.hash}`);
-          continue;
-        }
-
         if (filter.isProfane(commit.message)) {
           await prisma.commitAnalysis.create({
             data: {
@@ -50,7 +40,6 @@ async function analyzeRepository(repoUrl: string) {
           );
         }
 
-        await redis.set(cacheKey, "1", "EX", 86400);
         console.log(`Analyzed commit ${commit.hash} on branch ${branch}`);
       }
     }
@@ -69,7 +58,6 @@ async function main() {
 
   await analyzeRepository(repoUrl);
   await prisma.$disconnect();
-  await redis.quit();
 }
 
 main().catch(console.error);
