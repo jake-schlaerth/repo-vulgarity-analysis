@@ -4,18 +4,23 @@
   "type": "module",
   "scripts": {
     "start": "bun run src/index.ts",
-    "docker:run": "docker compose run --rm analyzer bun run src/index.ts"
+    "analyze": "docker compose run --rm analyzer bun run src/index.ts",
+    "db:push": "docker compose run --rm analyzer bunx prisma db push",
+    "prisma:generate": "docker compose run --rm analyzer bunx prisma generate"
   },
   "dependencies": {
-    "@prisma/client": "^5.10.0",
+    "@prisma/client": "^6.0.0",
     "@types/bad-words": "^3.0.3",
     "bad-words": "^3.0.4",
-    "ioredis": "^5.3.2",
-    "simple-git": "^3.22.0"
+    "ioredis": "^5.6.0",
+    "simple-git": "^3.27.0"
   },
   "devDependencies": {
     "bun-types": "latest",
-    "prisma": "^5.10.0",
-    "typescript": "^5.3.3"
-  }
+    "prisma": "^6.0.0",
+    "typescript": "^5.8.2"
+  },
+  "trustedDependencies": [
+    "@prisma/client"
+  ]
 }

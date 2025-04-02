@@ -2,6 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import Redis from "ioredis";
 import simpleGit from "simple-git";
 import Filter from "bad-words";
+import fs from "fs";
 
 const prisma = new PrismaClient();
 const redis = new Redis(process.env.REDIS_URL!);
@@ -10,13 +11,21 @@ const filter = new Filter();
 async function analyzeRepository(repoUrl: string) {
   const git = simpleGit();
   const repoName = repoUrl.split("/").pop()?.replace(".git", "") || "unknown";
+  const repoPath = `./repos/${repoName}`;
 
   try {
-    await git.clone(repoUrl, `./repos/${repoName}`);
-    const branches = await git.cwd(`./repos/${repoName}`).branch(["-a"]);
+    if (!fs.existsSync(repoPath) || !fs.statSync(repoPath).isDirectory()) {
+      await git.clone(repoUrl, repoPath);
+      console.log(`Cloning repository ${repoUrl} to ${repoPath}`);
+    } else {
+      console.log(`Using existing repository at ${repoPath}`);
+    }
+
+    const branches = await git.cwd(repoPath).branch(["-a"]);
+    console.log(`Analyzing ${branches.all.length} branches`);
 
     for (const branch of branches.all) {
-      const commits = await git.cwd(`./repos/${repoName}`).log([branch]);
+      const commits = await git.cwd(repoPath).log([branch]);
 
       for (const commit of commits.all) {
         const cacheKey = `${repoName}:${branch}:${commit.hash}`;
@@ -34,15 +43,20 @@ async function analyzeRepository(repoUrl: string) {
               .filter((word) => filter.isProfane(word))
           : [];
 
-        await prisma.commitAnalysis.create({
-          data: {
-            repository: repoUrl,
-            branch,
-            commitHash: commit.hash,
-            commitMessage: commit.message,
-            profanity,
-          },
-        });
+        if (profanity.length > 0) {
+          await prisma.commitAnalysis.create({
+            data: {
+              repository: repoUrl,
+              branch,
+              commitHash: commit.hash,
+              commitMessage: commit.message,
+              profanity,
+            },
+          });
+          console.log(
+            `Stored profane commit ${commit.hash} on branch ${branch}`
+          );
+        }
 
         await redis.set(cacheKey, "1", "EX", 86400);
         console.log(`Analyzed commit ${commit.hash} on branch ${branch}`);
