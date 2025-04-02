@@ -28,6 +28,8 @@ services:
     depends_on:
       - postgres
       - redis
+    env_file:
+      - .env
     environment:
       DATABASE_URL: ${DATABASE_URL}
       REDIS_URL: redis://redis:6379
