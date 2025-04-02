@@ -21,10 +21,27 @@ services:
 
   analyzer:
     build:
-      context: ./analyzer
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: analyzer/Dockerfile
     volumes:
       - ./analyzer:/app
+    depends_on:
+      - postgres
+      - redis
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      REDIS_URL: redis://redis:6379
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./backend:/app
     depends_on:
       - postgres
       - redis

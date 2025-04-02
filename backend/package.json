@@ -5,5 +5,10 @@
     "dev": "bun run --hot src/index.ts",
     "build": "bun build ./src/index.ts --outdir ./dist",
     "start": "bun run ./dist/index.js"
+  },
+  "dependencies": {
+    "elysia": "^0.8.17",
+    "@elysiajs/cors": "^0.8.0",
+    "@elysiajs/swagger": "^0.8.0"
   }
 }
