@@ -17,9 +17,11 @@ model CommitAnalysis {
   id            String   @id @default(uuid())
   repository    String
   branch        String
-  commitHash    String
-  commitMessage String
+  commitHash    String   @map("commit_hash")
+  commitMessage String   @map("commit_message")
   profanity     String[]
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-} 
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  @@map("commit_analysis")
+}

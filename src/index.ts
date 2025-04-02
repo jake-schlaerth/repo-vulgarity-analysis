@@ -36,21 +36,13 @@ async function analyzeRepository(repoUrl: string) {
           continue;
         }
 
-        const profanity = filter.isProfane(commit.message)
-          ? filter
-              .clean(commit.message)
-              .split(" ")
-              .filter((word) => filter.isProfane(word))
-          : [];
-
-        if (profanity.length > 0) {
+        if (filter.isProfane(commit.message)) {
           await prisma.commitAnalysis.create({
             data: {
               repository: repoUrl,
               branch,
               commitHash: commit.hash,
               commitMessage: commit.message,
-              profanity,
             },
           });
           console.log(
