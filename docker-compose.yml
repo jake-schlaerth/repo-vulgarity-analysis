@@ -21,10 +21,10 @@ services:
 
   analyzer:
     build:
-      context: .
+      context: ./analyzer
       dockerfile: Dockerfile
     volumes:
-      - .:/app
+      - ./analyzer:/app
     depends_on:
       - postgres
       - redis
