@@ -4,9 +4,9 @@
   "packageManager": "pnpm@10.7.1",
   "type": "module",
   "scripts": {
-    "start": "tsx src/index.ts",
-    "analyze": "docker compose run --rm analyzer tsx src/index.ts",
-    "db:pull": "docker compose run --rm analyzer prisma db pull"
+    "start": "pnpm db:pull && tail -f /dev/null",
+    "analyze": "docker compose run --rm analyzer pnpx src/index.ts",
+    "db:pull": "docker compose run --rm analyzer pnpx prisma db pull"
   },
   "dependencies": {
     "@octokit/rest": "^21.1.1",
@@ -20,8 +20,5 @@
     "prisma": "^6.0.0",
     "tsx": "^4.7.1",
     "typescript": "^5.8.2"
-  },
-  "trustedDependencies": [
-    "@prisma/client"
-  ]
+  }
 }

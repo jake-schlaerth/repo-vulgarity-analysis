@@ -1,4 +1,8 @@
 packages:
-  - "analyzer"
-  - "frontend"
-  - "backend"
+  - analyzer
+  - frontend
+  - backend
+ignoredBuiltDependencies:
+  - '@nestjs/core'
+  - esbuild
+  - svelte-preprocess

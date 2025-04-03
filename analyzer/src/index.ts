@@ -6,6 +6,13 @@ import fs from "fs";
 const prisma = new PrismaClient();
 const filter = new Filter();
 
+function convertToSSHUrl(httpsUrl: string): string {
+  if (httpsUrl.startsWith("https://github.com/")) {
+    return httpsUrl.replace("https://github.com/", "git@github.com:");
+  }
+  return httpsUrl;
+}
+
 async function analyzeRepository(repoUrl: string) {
   const git = simpleGit();
   const repoName = repoUrl.split("/").pop()?.replace(".git", "") || "unknown";
@@ -13,8 +20,22 @@ async function analyzeRepository(repoUrl: string) {
 
   try {
     if (!fs.existsSync(repoPath) || !fs.statSync(repoPath).isDirectory()) {
-      await git.clone(repoUrl, repoPath);
-      console.log(`Cloning repository ${repoUrl} to ${repoPath}`);
+      const sshUrl = convertToSSHUrl(repoUrl);
+      console.log(`Attempting to clone repository using SSH URL: ${sshUrl}`);
+
+      try {
+        await git.clone(sshUrl, repoPath);
+        console.log(`Cloning repository ${sshUrl} to ${repoPath}`);
+      } catch (cloneError: any) {
+        console.error(`Failed to clone with SSH URL: ${cloneError.message}`);
+        console.log(`Falling back to HTTPS URL: ${repoUrl}`);
+        console.log("Note: You may be prompted for GitHub credentials.");
+        console.log(
+          "To avoid this in the future, set up SSH keys or use a personal access token."
+        );
+        await git.clone(repoUrl, repoPath);
+        console.log(`Cloning repository ${repoUrl} to ${repoPath}`);
+      }
     } else {
       console.log(`Using existing repository at ${repoPath}`);
     }
