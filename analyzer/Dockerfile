@@ -9,4 +9,4 @@ RUN corepack enable && corepack prepare pnpm@10.7.1 --activate
 COPY analyzer/ ./
 RUN pnpm install
 
-CMD ["tail", "-f", "/dev/null"] 
+CMD ["pnpm", "start"] 
