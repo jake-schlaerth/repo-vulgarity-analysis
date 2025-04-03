@@ -1,14 +1,13 @@
-FROM oven/bun:1
+FROM node:22-slim
 
 WORKDIR /app
 
 RUN apt-get update && apt-get install -y git && rm -rf /var/lib/apt/lists/*
 
-COPY analyzer/package.json bun.lock ./
-RUN bun install
+RUN corepack enable && corepack prepare pnpm@10.7.1 --activate
 
-# wtf prisma doesn't work with bun?
-COPY --from=node:20 /usr/local/bin/node /usr/local/bin/node
+COPY analyzer/package.json ./
+RUN pnpm install --no-frozen-lockfile
 
 COPY analyzer/ .
 

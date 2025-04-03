@@ -1,12 +1,12 @@
 {
   "name": "analyzer",
   "private": true,
+  "packageManager": "pnpm@10.7.1",
   "type": "module",
   "scripts": {
-    "start": "bun run src/index.ts",
-    "analyze": "docker compose run --rm analyzer bun run src/index.ts",
-    "db:push": "docker compose run --rm analyzer bunx prisma db push",
-    "prisma:generate": "docker compose run --rm analyzer bunx prisma generate"
+    "start": "tsx src/index.ts",
+    "analyze": "docker compose run --rm analyzer tsx src/index.ts",
+    "db:pull": "docker compose run --rm analyzer prisma db pull"
   },
   "dependencies": {
     "@octokit/rest": "^21.1.1",
@@ -17,8 +17,8 @@
     "simple-git": "^3.27.0"
   },
   "devDependencies": {
-    "bun-types": "latest",
     "prisma": "^6.0.0",
+    "tsx": "^4.7.1",
     "typescript": "^5.8.2"
   },
   "trustedDependencies": [

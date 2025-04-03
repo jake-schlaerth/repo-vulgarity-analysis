@@ -1,14 +1,25 @@
 {
   "name": "backend",
   "private": true,
+  "packageManager": "pnpm@10.7.1",
   "scripts": {
-    "dev": "bun run --hot src/index.ts",
-    "build": "bun build ./src/index.ts --outdir ./dist",
-    "start": "bun run ./dist/index.js"
+    "dev": "node --loader tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "prisma:generate": "docker compose run --rm backend prisma generate",
+    "db:migrate": "docker compose run --rm backend prisma migrate dev"
   },
   "dependencies": {
     "elysia": "^0.8.17",
     "@elysiajs/cors": "^0.8.0",
     "@elysiajs/swagger": "^0.8.0"
-  }
+  },
+  "devDependencies": {
+    "prisma": "^6.5.0",
+    "tsx": "^4.7.1",
+    "typescript": "^5.8.2"
+  },
+  "trustedDependencies": [
+    "@prisma/client"
+  ]
 }

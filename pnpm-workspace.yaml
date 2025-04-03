@@ -1,0 +1,4 @@
+packages:
+  - "analyzer"
+  - "frontend"
+  - "backend"
