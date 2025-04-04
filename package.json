@@ -2,14 +2,8 @@
   "name": "repo-vulgarity-analysis",
   "private": true,
   "packageManager": "pnpm@10.7.1",
-  "workspaces": [
-    "analyzer",
-    "frontend",
-    "backend"
-  ],
   "scripts": {
-    "analyzer": "pnpm --filter analyzer",
-    "frontend": "pnpm --filter frontend",
-    "backend": "pnpm --filter backend"
+    "db:migrate": "docker compose run --rm database_migrations pnpm prisma migrate dev",
+    "analyze": "docker compose run --rm analyzer pnpm analyze"
   }
 }

@@ -2,12 +2,12 @@
   "compilerOptions": {
     "target": "ESNext",
     "module": "ESNext",
-    "moduleResolution": "bundler",
-    "types": ["bun-types"],
+    "moduleResolution": "Bundler",
     "esModuleInterop": true,
     "strict": true,
     "skipLibCheck": true,
-    "noImplicitAny": true
+    "outDir": "dist"
   },
-  "exclude": ["repos/**/*"]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "repos"]
 }

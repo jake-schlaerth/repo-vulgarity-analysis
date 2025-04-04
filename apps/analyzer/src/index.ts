@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "database";
 import simpleGit from "simple-git";
 import Filter from "bad-words";
 import fs from "fs";
@@ -27,17 +27,27 @@ async function analyzeRepository(repoUrl: string) {
 
       for (const commit of commits.all) {
         if (filter.isProfane(commit.message)) {
-          await prisma.commitAnalysis.create({
-            data: {
-              repository: repoUrl,
-              branch,
-              commitHash: commit.hash,
-              commitMessage: commit.message,
-            },
-          });
-          console.log(
-            `Stored profane commit ${commit.hash} on branch ${branch}`
-          );
+          try {
+            await prisma.commitAnalysis.create({
+              data: {
+                repository: repoUrl,
+                branch,
+                commitHash: commit.hash,
+                commitMessage: commit.message,
+              },
+            });
+            console.log(
+              `Stored profane commit ${commit.hash} on branch ${branch}`
+            );
+          } catch (error: any) {
+            if (error?.code === "P2002") {
+              console.log(
+                `Skipping duplicate commit ${commit.hash} on branch ${branch}`
+              );
+            } else {
+              throw error;
+            }
+          }
         }
 
         console.log(`Analyzed commit ${commit.hash} on branch ${branch}`);

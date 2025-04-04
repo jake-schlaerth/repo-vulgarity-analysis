@@ -4,17 +4,16 @@
   "packageManager": "pnpm@10.7.1",
   "type": "module",
   "scripts": {
-    "start": "pnpx prisma db pull",
-    "analyze": "docker compose run --rm analyzer pnpx tsx src/index.ts"
+    "build": "tsc",
+    "analyze": "tsx src/index.ts"
   },
   "dependencies": {
-    "@prisma/client": "^6.0.0",
     "@types/bad-words": "^3.0.3",
+    "database": "workspace:*",
     "bad-words": "^3.0.4",
     "simple-git": "^3.27.0"
   },
   "devDependencies": {
-    "prisma": "^6.0.0",
     "tsx": "^4.7.1",
     "typescript": "^5.8.2"
   }
