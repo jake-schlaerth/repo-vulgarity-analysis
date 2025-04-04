@@ -49,6 +49,17 @@ services:
     depends_on:
       - postgres
 
+  frontend:
+    build:
+      context: .
+      dockerfile: apps/frontend/Dockerfile
+    ports:
+      - "5173:5173"
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+
 volumes:
   postgres_data:
   redis_data:

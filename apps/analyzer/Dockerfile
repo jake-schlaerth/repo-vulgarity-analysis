@@ -14,3 +14,5 @@ RUN pnpm prisma generate
 
 WORKDIR /app/apps/analyzer
 RUN pnpm build
+
+CMD ["tail", "-f", "/dev/null"]

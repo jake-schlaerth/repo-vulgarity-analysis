@@ -13,8 +13,8 @@ async function analyzeRepository(repoUrl: string) {
 
   try {
     if (!fs.existsSync(repoPath) || !fs.statSync(repoPath).isDirectory()) {
-      await git.clone(repoUrl, repoPath);
       console.log(`Cloning repository ${repoUrl} to ${repoPath}`);
+      await git.clone(repoUrl, repoPath);
     } else {
       console.log(`Using existing repository at ${repoPath}`);
     }
