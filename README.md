@@ -4,5 +4,5 @@ a tool that analyzes commit messages across all branches of a git repository for
 
 to analyze a repo, run:
 
-- `docker compose up` to bring up db
-- `bun run analyze {{https repo url}}`
+- `docker compose up`
+- `pnpm analyze {{https repo url}}`
