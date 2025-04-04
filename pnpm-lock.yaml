@@ -129,6 +129,9 @@ importers:
       svelte:
         specifier: ^4.2.12
         version: 4.2.19
+      svelte-routing:
+        specifier: ^2.13.0
+        version: 2.13.0
     devDependencies:
       '@tsconfig/svelte':
         specifier: ^5.0.2
@@ -3497,6 +3500,9 @@ packages:
         optional: true
       typescript:
         optional: true
+
+  svelte-routing@2.13.0:
+    resolution: {integrity: sha512-/NTxqTwLc7Dq306hARJrH2HLXOBtKd7hu8nxgoFDlK0AC4SOKnzisiX/9m8Uksei1QAWtlAEdF91YphNM8iDMg==}
 
   svelte@4.2.19:
     resolution: {integrity: sha512-IY1rnGr6izd10B0A8LqsBfmlT5OILVuZ7XsI0vdGPEvuonFV7NYEUK4dAkm9Zg2q0Um92kYjTpS1CAP3Nh/KWw==}
@@ -7505,6 +7511,8 @@ snapshots:
       postcss: 8.5.3
       postcss-load-config: 4.0.2(postcss@8.5.3)(ts-node@10.9.2(@types/node@20.17.30)(typescript@5.8.2))
       typescript: 5.8.2
+
+  svelte-routing@2.13.0: {}
 
   svelte@4.2.19:
     dependencies:

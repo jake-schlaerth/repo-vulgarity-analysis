@@ -11,8 +11,9 @@
   },
   "dependencies": {
     "@sveltejs/vite-plugin-svelte": "^3.0.2",
+    "@tailwindcss/vite": "^4.0.0",
     "svelte": "^4.2.12",
-    "@tailwindcss/vite": "^4.0.0"
+    "svelte-routing": "^2.13.0"
   },
   "devDependencies": {
     "@tsconfig/svelte": "^5.0.2",

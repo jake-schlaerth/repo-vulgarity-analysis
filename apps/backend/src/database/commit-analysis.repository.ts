@@ -19,7 +19,7 @@ export class CommitAnalysisRepository {
   ) {
     const query = Prisma.sql`
       SELECT commit_message, commit_hash, repository FROM commit_analysis
-      WHERE text_search_vector @@ plainto_tsquery('english', ${profanity})
+      WHERE commit_message ILIKE ${`%${profanity}%`}
       ORDER BY updated_at DESC
       LIMIT ${limit}
       OFFSET ${offset}

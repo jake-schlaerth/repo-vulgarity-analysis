@@ -5,6 +5,7 @@
   "scripts": {
     "db:migrate": "docker compose run --rm database_migrations pnpm prisma migrate dev",
     "db:reset": "docker compose run --rm database_migrations pnpm prisma migrate reset",
+    "db:pull": "docker compose run --rm database_migrations pnpm prisma db pull",
     "analyze": "docker compose run --rm analyzer pnpm analyze"
   }
 }

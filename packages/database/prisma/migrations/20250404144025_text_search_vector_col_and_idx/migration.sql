@@ -1,7 +1,5 @@
-ALTER TABLE commit_analysis 
-ADD COLUMN text_search_vector tsvector 
-GENERATED ALWAYS AS (to_tsvector('english', commit_message)) STORED;
+CREATE EXTENSION IF NOT EXISTS pg_trgm;
 
-CREATE INDEX idx_commit_analysis_tsv
+CREATE INDEX idx_commit_analysis_trgm
 ON commit_analysis
-USING GIN (text_search_vector);
+USING GIN (commit_message gin_trgm_ops);

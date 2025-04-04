@@ -1,15 +1,13 @@
 model commitAnalysis {
-    id            String   @id @default(uuid())
-    repository    String
-    branch        String
-    commitHash    String   @map("commit_hash")
-    commitMessage String   @unique @map("commit_message")
-    profanity     String[]
-    createdAt     DateTime @default(now()) @map("created_at")
-    updatedAt     DateTime @updatedAt @map("updated_at")
+  id            String   @id @default(uuid())
+  repository    String
+  branch        String
+  commitHash    String   @map("commit_hash")
+  commitMessage String   @unique @map("commit_message")
+  profanity     String[]
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
 
-    textSearchVector Unsupported("tsvector")? @default(dbgenerated("to_tsvector('english'::regconfig, commit_message)")) @map("text_search_vector")
-
-    @@index([textSearchVector], map: "idx_commit_analysis_tsv", type: Gin)
-    @@map("commit_analysis")
+  @@index([commitMessage(ops: raw("gin_trgm_ops"))], map: "idx_commit_analysis_trgm", type: Gin)
+  @@map("commit_analysis")
 }
