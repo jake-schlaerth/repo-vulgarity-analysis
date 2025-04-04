@@ -4,6 +4,7 @@
   "packageManager": "pnpm@10.7.1",
   "scripts": {
     "db:migrate": "docker compose run --rm database_migrations pnpm prisma migrate dev",
+    "db:reset": "docker compose run --rm database_migrations pnpm prisma migrate reset",
     "analyze": "docker compose run --rm analyzer pnpm analyze"
   }
 }

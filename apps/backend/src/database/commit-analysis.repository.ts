@@ -18,8 +18,8 @@ export class CommitAnalysisRepository {
     offset: number = 0
   ) {
     const query = Prisma.sql`
-      SELECT * FROM commit_analysis
-      WHERE to_tsvector('english', commit_message) @@ plainto_tsquery('english', ${profanity})
+      SELECT commit_message, commit_hash, repository FROM commit_analysis
+      WHERE text_search_vector @@ plainto_tsquery('english', ${profanity})
       ORDER BY updated_at DESC
       LIMIT ${limit}
       OFFSET ${offset}

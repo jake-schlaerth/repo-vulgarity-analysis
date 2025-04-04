@@ -8,5 +8,8 @@ model commitAnalysis {
     createdAt     DateTime @default(now()) @map("created_at")
     updatedAt     DateTime @updatedAt @map("updated_at")
 
+    textSearchVector Unsupported("tsvector")? @default(dbgenerated("to_tsvector('english'::regconfig, commit_message)")) @map("text_search_vector")
+
+    @@index([textSearchVector], map: "idx_commit_analysis_tsv", type: Gin)
     @@map("commit_analysis")
 }
