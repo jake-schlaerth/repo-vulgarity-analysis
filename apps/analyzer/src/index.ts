@@ -2,9 +2,11 @@ import { PrismaClient } from "database";
 import simpleGit from "simple-git";
 import Filter from "bad-words";
 import fs from "fs";
+import { blacklist } from "./blacklist";
 
 const prisma = new PrismaClient();
-const filter = new Filter();
+const filter = new Filter({ emptyList: true });
+filter.addWords(...blacklist);
 
 async function analyzeRepository(repoUrl: string) {
   const git = simpleGit();

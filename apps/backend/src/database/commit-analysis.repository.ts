@@ -25,6 +25,18 @@ export class CommitAnalysisRepository {
       OFFSET ${offset}
     `;
 
-    return this.prisma.$queryRaw(query);
+    const result = (await this.prisma.$queryRaw(query)) as {
+      commit_message: string;
+      commit_hash: string;
+      repository: string;
+    }[];
+
+    const camelCaseResult = result.map((row: any) => ({
+      commitMessage: row.commit_message,
+      commitHash: row.commit_hash,
+      repository: row.repository,
+    }));
+
+    return camelCaseResult;
   }
 }

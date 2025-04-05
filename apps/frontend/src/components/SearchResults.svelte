@@ -1,6 +1,6 @@
 <script lang="ts">
 interface SearchResult {
-  repositoryName: string;
+  repository: string;
   commitMessage: string;
   commitHash: string;
 }
@@ -8,6 +8,16 @@ interface SearchResult {
 export let results: SearchResult[] = [];
 export let error: string | null = null;
 export let isLoading = false;
+
+function getRepoPath(repoUrl: string): string {
+  const url = repoUrl.replace('https://github.com/', '').replace('.git', '');
+  return url;
+}
+
+function getRepoName(repoUrl: string): string {
+  const path = getRepoPath(repoUrl);
+  return path.split('/').pop() || '';
+}
 </script>
 
 {#if error}
@@ -20,7 +30,24 @@ export let isLoading = false;
     <ul class="list-none">
       {#each results as result}
         <li class="mb-4 p-4 border rounded text-left bg-gray-800 border-gray-700">
-          <pre class="whitespace-pre-wrap text-gray-300">{JSON.stringify(result, null, 2)}</pre>
+          <div class="flex flex-col gap-3">
+            <div>
+              <span class="text-gray-500 text-sm tracking-wide">repo</span>
+              <div class="text-gray-300 font-medium">{getRepoName(result.repository)}</div>
+            </div>
+            <div>
+              <span class="text-gray-500 text-sm tracking-wide">commit message</span>
+              <div class="text-gray-300 mt-1">{result.commitMessage}</div>
+            </div>
+            <a 
+              href="https://github.com/{getRepoPath(result.repository)}/commit/{result.commitHash}"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-blue-400 hover:text-blue-300 underline text-sm mt-1"
+            >
+              view commit
+            </a>
+          </div>
         </li>
       {/each}
     </ul>
